@@ -19,7 +19,7 @@ func (p queryStringValue) Set(val string) error {
 	for _, v := range strings.Split(val, "&") {
 		param := strings.SplitN(v, "=", 2)
 		if len(param) != 2 {
-			continue
+			param = append(param, "")
 		}
 
 		p[param[0]] = param[1]

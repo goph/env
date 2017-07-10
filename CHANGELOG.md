@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 - Variable usage lists variables in lexicographical or primordial order
+- Empty values are not filtered out from query string maps
 
 
 ## [0.6.0] - 2018-06-22
