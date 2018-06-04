@@ -28,24 +28,6 @@ func (v *valueStub) Type() string {
 	return v.typ
 }
 
-type value struct {
-	value string
-}
-
-func (v *value) String() string {
-	return v.value
-}
-
-func (v *value) Set(value string) error {
-	v.value = value
-
-	return nil
-}
-
-func (*value) Type() string {
-	return "value"
-}
-
 func TestEnvVarSet(t *testing.T) {
 	environment := map[string]string{
 		"value": "value",
@@ -57,7 +39,10 @@ func TestEnvVarSet(t *testing.T) {
 		t.Fatal("parsed before Parse is called")
 	}
 
-	v := &value{}
+	v := &valueStub{
+		typ: "valueStub",
+		err: nil,
+	}
 
 	envvarset.Var(v, "value", "Value usage string")
 
