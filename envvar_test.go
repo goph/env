@@ -61,6 +61,39 @@ func TestEnvVarSet(t *testing.T) {
 	}
 }
 
+func TestEnvVarSet_ParseEnviron(t *testing.T) {
+	environment := []string{
+		"value=value=value",
+	}
+
+	envvarset := env.NewEnvVarSet(env.ContinueOnError)
+
+	if envvarset.Parsed() {
+		t.Fatal("parsed before Parse is called")
+	}
+
+	v := &valueStub{
+		typ: "valueStub",
+		err: nil,
+	}
+
+	envvarset.Var(v, "value", "Value usage string")
+
+	err := envvarset.ParseEnviron(environment)
+
+	if err != nil {
+		t.Fatal("Parse is expected to return a nil (non-error) value")
+	}
+
+	if !envvarset.Parsed() {
+		t.Error("not parsed after Parse is called")
+	}
+
+	if v.value != "value=value" {
+		t.Error("returned value is expected to be value=value")
+	}
+}
+
 func TestEnvVarSet_ErrorHandling_ContinueOnError(t *testing.T) {
 	environment := map[string]string{
 		"value": "value",

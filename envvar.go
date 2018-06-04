@@ -3,6 +3,7 @@ package env
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 // ErrorHandling defines how to handle env var parsing errors.
@@ -67,6 +68,20 @@ func (s *EnvVarSet) Parse(environment map[string]string) error {
 	return nil
 }
 
+// ParseEnviron accepts a list of environment variables in the "key=value" format
+// returned by os.Environ(), transforms it into a string map and calls Parse.
+func (s *EnvVarSet) ParseEnviron(environ []string) error {
+	env := map[string]string{}
+
+	for _, value := range environ {
+		v := strings.SplitN(value, "=", 2)
+
+		env[v[0]] = v[1]
+	}
+
+	return s.Parse(env)
+}
+
 // Var defines an environment variable with the specified name and usage string.
 // The type and value of the variable are represented by the first argument,
 // of type Value, which typically holds a user-defined implementation of Value.
@@ -85,3 +100,4 @@ func (s *EnvVarSet) Var(value Value, name string, usage string) {
 func (s *EnvVarSet) Parsed() bool {
 	return s.parsed
 }
+
