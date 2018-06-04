@@ -42,6 +42,20 @@ func NewEnvVarSet(errorHandling ErrorHandling) *EnvVarSet {
 	}
 }
 
+// Var defines an environment variable with the specified name and usage string.
+// The type and value of the variable are represented by the first argument,
+// of type Value, which typically holds a user-defined implementation of Value.
+// For instance, the caller could create an environment variable
+// that turns a comma-separated string into a slice of strings by giving the slice the methods of Value;
+// in particular, Set would decompose the comma-separated string into the slice.
+func (s *EnvVarSet) Var(value Value, name string, usage string) {
+	if s.vars == nil {
+		s.vars = make(map[string]Value)
+	}
+
+	s.vars[name] = value
+}
+
 // Parse parses environment variables according to the definitions in the EnvVarSet.
 // Must be called after all variables in the EnvVarSet
 // are defined and before variables are accessed by the program.
@@ -80,20 +94,6 @@ func (s *EnvVarSet) ParseEnviron(environ []string) error {
 	}
 
 	return s.Parse(env)
-}
-
-// Var defines an environment variable with the specified name and usage string.
-// The type and value of the variable are represented by the first argument,
-// of type Value, which typically holds a user-defined implementation of Value.
-// For instance, the caller could create an environment variable
-// that turns a comma-separated string into a slice of strings by giving the slice the methods of Value;
-// in particular, Set would decompose the comma-separated string into the slice.
-func (s *EnvVarSet) Var(value Value, name string, usage string) {
-	if s.vars == nil {
-		s.vars = make(map[string]Value)
-	}
-
-	s.vars[name] = value
 }
 
 // Parsed reports whether Parse has been called on EnvVarSet.
