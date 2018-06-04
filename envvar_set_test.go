@@ -53,6 +53,10 @@ func TestEnvVarSet(t *testing.T) {
 
 	envvarset := env.NewEnvVarSet(env.ContinueOnError)
 
+	if envvarset.Parsed() {
+		t.Fatal("parsed before Parse is called")
+	}
+
 	v := &value{}
 
 	envvarset.Var(v, "value", "Value usage string")
@@ -61,6 +65,10 @@ func TestEnvVarSet(t *testing.T) {
 
 	if err != nil {
 		t.Fatal("Parse is expected to return a nil (non-error) value")
+	}
+
+	if !envvarset.Parsed() {
+		t.Error("not parsed after Parse is called")
 	}
 
 	if v.value != "value" {

@@ -29,6 +29,7 @@ type Value interface {
 
 // EnvVarSet is a set of defined environment variables.
 type EnvVarSet struct {
+	parsed        bool
 	vars          map[string]Value
 	errorHandling ErrorHandling
 }
@@ -44,6 +45,8 @@ func NewEnvVarSet(errorHandling ErrorHandling) *EnvVarSet {
 // Must be called after all variables in the EnvVarSet
 // are defined and before variables are accessed by the program.
 func (s *EnvVarSet) Parse(environment map[string]string) error {
+	s.parsed = true
+
 	for key, value := range environment {
 		if _var, ok := s.vars[key]; ok {
 			err := _var.Set(value)
@@ -70,4 +73,9 @@ func (s *EnvVarSet) Var(value Value, name string, usage string) {
 	}
 
 	s.vars[name] = value
+}
+
+// Parsed reports whether Parse has been on EnvVarSet.
+func (s *EnvVarSet) Parsed() bool {
+	return s.parsed
 }
