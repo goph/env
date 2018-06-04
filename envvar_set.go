@@ -19,6 +19,14 @@ const (
 	PanicOnError
 )
 
+// Value is the interface to the dynamic value stored in an environment variable.
+// (The default value is represented as a string.)
+type Value interface {
+	String() string
+	Set(string) error
+	Type() string
+}
+
 // EnvVarSet is a set of defined environment variables.
 type EnvVarSet struct {
 	vars          map[string]Value
