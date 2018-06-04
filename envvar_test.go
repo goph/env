@@ -137,5 +137,6 @@ func TestEnvVarSet_ErrorHandling_Panic(t *testing.T) {
 		}
 	}()
 
+	// nolint:errcheck
 	envvarset.Parse(environment)
 }

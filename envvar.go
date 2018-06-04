@@ -100,4 +100,3 @@ func (s *EnvVarSet) ParseEnviron(environ []string) error {
 func (s *EnvVarSet) Parsed() bool {
 	return s.parsed
 }
-
