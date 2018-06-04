@@ -81,7 +81,7 @@ func (s *EnvVarSet) Var(value Value, name string, usage string) {
 	s.vars[name] = value
 }
 
-// Parsed reports whether Parse has been on EnvVarSet.
+// Parsed reports whether Parse has been called on EnvVarSet.
 func (s *EnvVarSet) Parsed() bool {
 	return s.parsed
 }
