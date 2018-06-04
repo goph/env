@@ -67,6 +67,12 @@ func (s *EnvVarSet) Parse(environment map[string]string) error {
 	return nil
 }
 
+// Var defines an environment variable with the specified name and usage string.
+// The type and value of the variable are represented by the first argument,
+// of type Value, which typically holds a user-defined implementation of Value.
+// For instance, the caller could create an environment variable
+// that turns a comma-separated string into a slice of strings by giving the slice the methods of Value;
+// in particular, Set would decompose the comma-separated string into the slice.
 func (s *EnvVarSet) Var(value Value, name string, usage string) {
 	if s.vars == nil {
 		s.vars = make(map[string]Value)
