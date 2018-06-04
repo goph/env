@@ -7,5 +7,11 @@ import (
 )
 
 func TestEnvVarSet(t *testing.T) {
-	_ = env.NewEnvVarSet()
+	envvarset := env.NewEnvVarSet()
+
+	err := envvarset.Parse()
+
+	if err != nil {
+		t.Error("Parse is expected to return a nil (non-error) value")
+	}
 }

@@ -8,3 +8,10 @@ type EnvVarSet struct {
 func NewEnvVarSet() *EnvVarSet {
 	return &EnvVarSet{}
 }
+
+// Parse parses environment variables according to the definitions in the EnvVarSet.
+// Must be called after all variables in the EnvVarSet
+// are defined and before variables are accessed by the program.
+func (s *EnvVarSet) Parse() error {
+	return nil
+}
