@@ -41,5 +41,5 @@ Here is an example for a regular application using both flags and environment va
 
 		// ... further code
 	}
- */
+*/
 package env
