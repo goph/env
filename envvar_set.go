@@ -1,13 +1,35 @@
 package env
 
+import (
+	"fmt"
+	"os"
+)
+
+// ErrorHandling defines how to handle env var parsing errors.
+type ErrorHandling int
+
+const (
+	// ContinueOnError will return an err from Parse() if an error is found
+	ContinueOnError ErrorHandling = iota
+
+	// ExitOnError will call os.Exit(2) if an error is found when parsing
+	ExitOnError
+
+	// PanicOnError will panic() if an error is found when parsing flags
+	PanicOnError
+)
+
 // EnvVarSet is a set of defined environment variables.
 type EnvVarSet struct {
-	vars map[string]Value
+	vars          map[string]Value
+	errorHandling ErrorHandling
 }
 
 // NewEnvVarSet returns a new, empty environment variable set.
-func NewEnvVarSet() *EnvVarSet {
-	return &EnvVarSet{}
+func NewEnvVarSet(errorHandling ErrorHandling) *EnvVarSet {
+	return &EnvVarSet{
+		errorHandling: errorHandling,
+	}
 }
 
 // Parse parses environment variables according to the definitions in the EnvVarSet.
@@ -18,7 +40,15 @@ func (s *EnvVarSet) Parse(environment map[string]string) error {
 		if _var, ok := s.vars[key]; ok {
 			err := _var.Set(value)
 			if err != nil {
-				return err
+				switch s.errorHandling {
+				case ContinueOnError:
+					return err
+				case ExitOnError:
+					fmt.Println(err)
+					os.Exit(2)
+				case PanicOnError:
+					panic(err)
+				}
 			}
 		}
 	}
