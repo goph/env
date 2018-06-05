@@ -7,6 +7,7 @@ import (
 )
 
 type valueVars struct {
+	boolVar   *bool
 	intVar    *int
 	int16Var  *int16
 	int32Var  *int32
@@ -24,6 +25,7 @@ func TestValue(t *testing.T) {
 	envvarset := env.NewEnvVarSet(env.ContinueOnError)
 	vars := new(valueVars)
 
+	vars.boolVar = envvarset.Bool("bool", false, "bool value")
 	vars.intVar = envvarset.Int("int", 0, "int value")
 	vars.int16Var = envvarset.Int16("int16", 0, "int16 value")
 	vars.int32Var = envvarset.Int32("int32", 0, "int32 value")
@@ -42,6 +44,7 @@ func TestValue(t *testing.T) {
 func TestValueVar(t *testing.T) {
 	envvarset := env.NewEnvVarSet(env.ContinueOnError)
 	vars := &valueVars{
+		boolVar:    new(bool),
 		intVar:    new(int),
 		int16Var:  new(int16),
 		int32Var:  new(int32),
@@ -55,6 +58,7 @@ func TestValueVar(t *testing.T) {
 		uint8Var:  new(uint8),
 	}
 
+	envvarset.BoolVar(vars.boolVar, "bool", false, "bool value")
 	envvarset.IntVar(vars.intVar, "int", 0, "int value")
 	envvarset.Int16Var(vars.int16Var, "int16", 0, "int16 value")
 	envvarset.Int32Var(vars.int32Var, "int32", 0, "int32 value")
@@ -72,6 +76,7 @@ func TestValueVar(t *testing.T) {
 
 func testValue(t *testing.T, envvarset *env.EnvVarSet, vars *valueVars) {
 	environment := map[string]string{
+		"bool":    "true",
 		"int":    "22",
 		"int16":  "16",
 		"int32":  "32",
@@ -89,6 +94,10 @@ func testValue(t *testing.T, envvarset *env.EnvVarSet, vars *valueVars) {
 
 	if err != nil {
 		t.Fatal("Parse is expected to return a nil (non-error) value")
+	}
+
+	if *vars.boolVar != true {
+		t.Error("bool var should be `true`, got: ", *vars.boolVar)
 	}
 
 	if *vars.intVar != 22 {
