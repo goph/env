@@ -20,7 +20,7 @@ func (i *intValue) Set(val string) error {
 
 func (*intValue) Type() string { return "int" }
 
-func (i *intValue) String() string { return strconv.Itoa(int(*i)) }
+func (i *intValue) String() string { return strconv.FormatInt(int64(*i), 10) }
 
 // IntVar defines an int environment variable with specified name, default value, and usage string.
 // The argument p points to an int variable in which to store the value of the environment variable.
