@@ -31,7 +31,13 @@ type EnvVarSet struct {
 
 // EnvVar represents the state of an environment variable.
 type EnvVar struct {
-	Name  string
+	// Name of the environment variable
+	Name string
+
+	// Usage message
+	Usage string
+
+	// Value as set
 	Value Value
 }
 
@@ -51,6 +57,7 @@ func NewEnvVarSet(errorHandling ErrorHandling) *EnvVarSet {
 func (s *EnvVarSet) Var(value Value, name string, usage string) {
 	envVar := &EnvVar{
 		Name:  name,
+		Usage: usage,
 		Value: value,
 	}
 
