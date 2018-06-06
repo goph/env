@@ -24,9 +24,15 @@ const (
 // EnvVarSet is a set of defined environment variables.
 type EnvVarSet struct {
 	parsed        bool
-	vars          map[string]Value
+	vars          map[string]*EnvVar
 	errorHandling ErrorHandling
 	output        io.Writer // nil means stderr; use out() accessor
+}
+
+// EnvVar represents the state of an environment variable.
+type EnvVar struct {
+	Name  string
+	Value Value
 }
 
 // NewEnvVarSet returns a new, empty environment variable set.
@@ -43,20 +49,32 @@ func NewEnvVarSet(errorHandling ErrorHandling) *EnvVarSet {
 // that turns a comma-separated string into a slice of strings by giving the slice the methods of Value;
 // in particular, Set would decompose the comma-separated string into the slice.
 func (s *EnvVarSet) Var(value Value, name string, usage string) {
-	if s.vars == nil {
-		s.vars = make(map[string]Value)
+	envVar := &EnvVar{
+		Name:  name,
+		Value: value,
 	}
+
+	s.AddEnvVar(envVar)
+}
+
+// AddEnvVar will add the environment variable to the EnvVarSet.
+func (s *EnvVarSet) AddEnvVar(envVar *EnvVar) {
+	if s.vars == nil {
+		s.vars = make(map[string]*EnvVar)
+	}
+
+	name := envVar.Name
 
 	_, alreadyThere := s.vars[name]
 	if alreadyThere {
-		msg := fmt.Sprintf("%s environment variable redefined: %s", name, name)
+		msg := fmt.Sprintf("%s environment variable redefined: %s", name, envVar.Name)
 
 		fmt.Fprintln(s.out(), msg)
 
 		panic(msg) // Happens only if environment variables are declared with identical names
 	}
 
-	s.vars[name] = value
+	s.vars[name] = envVar
 }
 
 func (s *EnvVarSet) out() io.Writer {
@@ -80,8 +98,8 @@ func (s *EnvVarSet) Parse(environment map[string]string) error {
 	s.parsed = true
 
 	for key, value := range environment {
-		if _var, ok := s.vars[key]; ok {
-			err := _var.Set(value)
+		if ev, ok := s.vars[key]; ok {
+			err := ev.Value.Set(value)
 			if err != nil {
 				switch s.errorHandling {
 				case ContinueOnError:
