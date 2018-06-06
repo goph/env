@@ -22,18 +22,30 @@ func (*durationValue) Type() string { return "duration" }
 
 func (d *durationValue) String() string { return (*time.Duration)(d).String() }
 
-// DurationVar defines a duration environment variable with specified name, default value, and usage string.
-// The argument p points to a duration variable in which to store the value of the environment variable.
+// DurationVar defines a time.Duration environment variable with specified name, default value, and usage string.
+// The argument p points to a time.Duration variable in which to store the value of the environment variable.
 func (s *EnvVarSet) DurationVar(p *time.Duration, name string, value time.Duration, usage string) {
 	s.Var(newDurationValue(value, p), name, usage)
 }
 
-// Duration defines a duration environment variable with specified name, default value, and usage string.
-// The return value is the address of a duration variable that stores the value of the environment variable.
+// Duration defines a time.Duration environment variable with specified name, default value, and usage string.
+// The return value is the address of a time.Duration variable that stores the value of the environment variable.
 func (s *EnvVarSet) Duration(name string, value time.Duration, usage string) *time.Duration {
 	p := new(time.Duration)
 
 	s.DurationVar(p, name, value, usage)
 
 	return p
+}
+
+// DurationVar defines a time.Duration environment variable with specified name, default value, and usage string.
+// The argument p points to a time.Duration variable in which to store the value of the environment variable.
+func DurationVar(p *time.Duration, name string, value time.Duration, usage string) {
+	Environment.DurationVar(p, name, value, usage)
+}
+
+// Duration defines a time.Duration environment variable with specified name, default value, and usage string.
+// The return value is the address of a time.Duration variable that stores the value of the environment variable.
+func Duration(name string, value time.Duration, usage string) *time.Duration {
+	return Environment.Duration(name, value, usage)
 }

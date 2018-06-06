@@ -37,3 +37,15 @@ func (s *EnvVarSet) Float64(name string, value float64, usage string) *float64 {
 
 	return p
 }
+
+// Float64Var defines a float64 environment variable with specified name, default value, and usage string.
+// The argument p points to a float64 variable in which to store the value of the environment variable.
+func Float64Var(p *float64, name string, value float64, usage string) {
+	Environment.Float64Var(p, name, value, usage)
+}
+
+// Float64 defines a float64 environment variable with specified name, default value, and usage string.
+// The return value is the address of a float64 variable that stores the value of the environment variable.
+func Float64(name string, value float64, usage string) *float64 {
+	return Environment.Float64(name, value, usage)
+}

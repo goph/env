@@ -37,3 +37,15 @@ func (s *EnvVarSet) Bool(name string, value bool, usage string) *bool {
 
 	return p
 }
+
+// BoolVar defines a bool environment variable with specified name, default value, and usage string.
+// The argument p points to a bool variable in which to store the value of the environment variable.
+func BoolVar(p *bool, name string, value bool, usage string) {
+	Environment.BoolVar(p, name, value, usage)
+}
+
+// Bool defines a bool environment variable with specified name, default value, and usage string.
+// The return value is the address of a bool variable that stores the value of the environment variable.
+func Bool(name string, value bool, usage string) *bool {
+	return Environment.Bool(name, value, usage)
+}
