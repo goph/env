@@ -3,24 +3,27 @@ package env_test
 import (
 	"testing"
 
+	"time"
+
 	"github.com/goph/env"
 )
 
 type valueVars struct {
-	boolVar    *bool
-	float32Var *float32
-	float64Var *float64
-	intVar     *int
-	int16Var   *int16
-	int32Var   *int32
-	int64Var   *int64
-	int8Var    *int8
-	stringVar  *string
-	uintVar    *uint
-	uint16Var  *uint16
-	uint32Var  *uint32
-	uint64Var  *uint64
-	uint8Var   *uint8
+	boolVar     *bool
+	durationVar *time.Duration
+	float32Var  *float32
+	float64Var  *float64
+	intVar      *int
+	int16Var    *int16
+	int32Var    *int32
+	int64Var    *int64
+	int8Var     *int8
+	stringVar   *string
+	uintVar     *uint
+	uint16Var   *uint16
+	uint32Var   *uint32
+	uint64Var   *uint64
+	uint8Var    *uint8
 }
 
 func TestValue(t *testing.T) {
@@ -28,6 +31,7 @@ func TestValue(t *testing.T) {
 	vars := new(valueVars)
 
 	vars.boolVar = envvarset.Bool("bool", false, "bool value")
+	vars.durationVar = envvarset.Duration("duration", 0, "time.Duration value")
 	vars.float32Var = envvarset.Float32("float32", 0, "float32 value")
 	vars.float64Var = envvarset.Float64("float64", 0, "float64 value")
 	vars.intVar = envvarset.Int("int", 0, "int value")
@@ -48,23 +52,25 @@ func TestValue(t *testing.T) {
 func TestValueVar(t *testing.T) {
 	envvarset := env.NewEnvVarSet(env.ContinueOnError)
 	vars := &valueVars{
-		boolVar:    new(bool),
-		float32Var: new(float32),
-		float64Var: new(float64),
-		intVar:     new(int),
-		int16Var:   new(int16),
-		int32Var:   new(int32),
-		int64Var:   new(int64),
-		int8Var:    new(int8),
-		stringVar:  new(string),
-		uintVar:    new(uint),
-		uint16Var:  new(uint16),
-		uint32Var:  new(uint32),
-		uint64Var:  new(uint64),
-		uint8Var:   new(uint8),
+		boolVar:     new(bool),
+		durationVar: new(time.Duration),
+		float32Var:  new(float32),
+		float64Var:  new(float64),
+		intVar:      new(int),
+		int16Var:    new(int16),
+		int32Var:    new(int32),
+		int64Var:    new(int64),
+		int8Var:     new(int8),
+		stringVar:   new(string),
+		uintVar:     new(uint),
+		uint16Var:   new(uint16),
+		uint32Var:   new(uint32),
+		uint64Var:   new(uint64),
+		uint8Var:    new(uint8),
 	}
 
 	envvarset.BoolVar(vars.boolVar, "bool", false, "bool value")
+	envvarset.DurationVar(vars.durationVar, "duration", 0, "time.Duration value")
 	envvarset.Float32Var(vars.float32Var, "float32", 0, "float32 value")
 	envvarset.Float64Var(vars.float64Var, "float64", 0, "float64 value")
 	envvarset.IntVar(vars.intVar, "int", 0, "int value")
@@ -84,20 +90,21 @@ func TestValueVar(t *testing.T) {
 
 func testValue(t *testing.T, envvarset *env.EnvVarSet, vars *valueVars) {
 	environment := map[string]string{
-		"bool":    "true",
-		"float32": "172e12",
-		"float64": "2718e28",
-		"int":     "22",
-		"int16":   "16",
-		"int32":   "32",
-		"int64":   "64",
-		"int8":    "8",
-		"string":  "string",
-		"uint":    "22",
-		"uint16":  "16",
-		"uint32":  "32",
-		"uint64":  "64",
-		"uint8":   "8",
+		"bool":     "true",
+		"duration": "1s",
+		"float32":  "172e12",
+		"float64":  "2718e28",
+		"int":      "22",
+		"int16":    "16",
+		"int32":    "32",
+		"int64":    "64",
+		"int8":     "8",
+		"string":   "string",
+		"uint":     "22",
+		"uint16":   "16",
+		"uint32":   "32",
+		"uint64":   "64",
+		"uint8":    "8",
 	}
 
 	err := envvarset.Parse(environment)
@@ -108,6 +115,10 @@ func testValue(t *testing.T, envvarset *env.EnvVarSet, vars *valueVars) {
 
 	if *vars.boolVar != true {
 		t.Error("bool var should be `true`, got: ", *vars.boolVar)
+	}
+
+	if *vars.durationVar != time.Second {
+		t.Error("duration var should be `1s`, got: ", (*vars.durationVar).String())
 	}
 
 	if *vars.float32Var != 172e12 {
