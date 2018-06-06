@@ -37,3 +37,15 @@ func (s *EnvVarSet) Float32(name string, value float32, usage string) *float32 {
 
 	return p
 }
+
+// Float32Var defines a float32 environment variable with specified name, default value, and usage string.
+// The argument p points to a float32 variable in which to store the value of the environment variable.
+func Float32Var(p *float32, name string, value float32, usage string) {
+	Environment.Float32Var(p, name, value, usage)
+}
+
+// Float32 defines a float32 environment variable with specified name, default value, and usage string.
+// The return value is the address of a float32 variable that stores the value of the environment variable.
+func Float32(name string, value float32, usage string) *float32 {
+	return Environment.Float32(name, value, usage)
+}

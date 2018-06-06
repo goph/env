@@ -37,3 +37,15 @@ func (s *EnvVarSet) Int16(name string, value int16, usage string) *int16 {
 
 	return p
 }
+
+// Int16Var defines a int16 environment variable with specified name, default value, and usage string.
+// The argument p points to a int16 variable in which to store the value of the environment variable.
+func Int16Var(p *int16, name string, value int16, usage string) {
+	Environment.Int16Var(p, name, value, usage)
+}
+
+// Int16 defines a int16 environment variable with specified name, default value, and usage string.
+// The return value is the address of a int16 variable that stores the value of the environment variable.
+func Int16(name string, value int16, usage string) *int16 {
+	return Environment.Int16(name, value, usage)
+}

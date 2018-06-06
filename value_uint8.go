@@ -37,3 +37,15 @@ func (s *EnvVarSet) Uint8(name string, value uint8, usage string) *uint8 {
 
 	return p
 }
+
+// Uint8Var defines a uint8 environment variable with specified name, default value, and usage string.
+// The argument p points to a uint8 variable in which to store the value of the environment variable.
+func Uint8Var(p *uint8, name string, value uint8, usage string) {
+	Environment.Uint8Var(p, name, value, usage)
+}
+
+// Uint8 defines a uint8 environment variable with specified name, default value, and usage string.
+// The return value is the address of a uint8 variable that stores the value of the environment variable.
+func Uint8(name string, value uint8, usage string) *uint8 {
+	return Environment.Uint8(name, value, usage)
+}

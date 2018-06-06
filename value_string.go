@@ -33,3 +33,15 @@ func (s *EnvVarSet) String(name string, value string, usage string) *string {
 
 	return p
 }
+
+// StringVar defines a string environment variable with specified name, default value, and usage string.
+// The argument p points to a string variable in which to store the value of the environment variable.
+func StringVar(p *string, name string, value string, usage string) {
+	Environment.StringVar(p, name, value, usage)
+}
+
+// String defines a string environment variable with specified name, default value, and usage string.
+// The return value is the address of a string variable that stores the value of the environment variable.
+func String(name string, value string, usage string) *string {
+	return Environment.String(name, value, usage)
+}

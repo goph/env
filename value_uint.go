@@ -37,3 +37,15 @@ func (s *EnvVarSet) Uint(name string, value uint, usage string) *uint {
 
 	return p
 }
+
+// UintVar defines a uint environment variable with specified name, default value, and usage string.
+// The argument p points to a uint variable in which to store the value of the environment variable.
+func UintVar(p *uint, name string, value uint, usage string) {
+	Environment.UintVar(p, name, value, usage)
+}
+
+// Uint defines a uint environment variable with specified name, default value, and usage string.
+// The return value is the address of a uint variable that stores the value of the environment variable.
+func Uint(name string, value uint, usage string) *uint {
+	return Environment.Uint(name, value, usage)
+}

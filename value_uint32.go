@@ -37,3 +37,15 @@ func (s *EnvVarSet) Uint32(name string, value uint32, usage string) *uint32 {
 
 	return p
 }
+
+// Uint32Var defines a uint32 environment variable with specified name, default value, and usage string.
+// The argument p points to a uint32 variable in which to store the value of the environment variable.
+func Uint32Var(p *uint32, name string, value uint32, usage string) {
+	Environment.Uint32Var(p, name, value, usage)
+}
+
+// Uint32 defines a uint32 environment variable with specified name, default value, and usage string.
+// The return value is the address of a uint32 variable that stores the value of the environment variable.
+func Uint32(name string, value uint32, usage string) *uint32 {
+	return Environment.Uint32(name, value, usage)
+}

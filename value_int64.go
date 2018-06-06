@@ -37,3 +37,15 @@ func (s *EnvVarSet) Int64(name string, value int64, usage string) *int64 {
 
 	return p
 }
+
+// Int64Var defines a int64 environment variable with specified name, default value, and usage string.
+// The argument p points to a int64 variable in which to store the value of the environment variable.
+func Int64Var(p *int64, name string, value int64, usage string) {
+	Environment.Int64Var(p, name, value, usage)
+}
+
+// Int64 defines a int64 environment variable with specified name, default value, and usage string.
+// The return value is the address of a int64 variable that stores the value of the environment variable.
+func Int64(name string, value int64, usage string) *int64 {
+	return Environment.Int64(name, value, usage)
+}
