@@ -113,7 +113,7 @@ func testValue(t *testing.T, envvarset *env.EnvVarSet, vars *valueVars) {
 		t.Fatal("Parse is expected to return a nil (non-error) value")
 	}
 
-	if *vars.boolVar != true {
+	if !*vars.boolVar {
 		t.Error("bool var should be `true`, got: ", *vars.boolVar)
 	}
 
