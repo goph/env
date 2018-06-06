@@ -17,4 +17,4 @@ matrix:
     allow_failures:
         - go: tip
 
-script: make check
+script: go test
