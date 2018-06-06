@@ -26,7 +26,7 @@ type EnvVarSet struct {
 	parsed        bool
 	vars          map[string]Value
 	errorHandling ErrorHandling
-	output io.Writer // nil means stderr; use out() accessor
+	output        io.Writer // nil means stderr; use out() accessor
 }
 
 // NewEnvVarSet returns a new, empty environment variable set.
