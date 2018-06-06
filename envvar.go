@@ -16,7 +16,7 @@ const (
 	// ExitOnError will call os.Exit(2) if an error is found when parsing
 	ExitOnError
 
-	// PanicOnError will panic() if an error is found when parsing flags
+	// PanicOnError will panic() if an error is found when parsing environment variables
 	PanicOnError
 )
 
@@ -43,6 +43,13 @@ func NewEnvVarSet(errorHandling ErrorHandling) *EnvVarSet {
 func (s *EnvVarSet) Var(value Value, name string, usage string) {
 	if s.vars == nil {
 		s.vars = make(map[string]Value)
+	}
+
+	_, alreadyThere := s.vars[name]
+	if alreadyThere {
+		msg := fmt.Sprintf("%s environment variable redefined: %s", name, name)
+
+		panic(msg) // Happens only if environment variables are declared with identical names
 	}
 
 	s.vars[name] = value

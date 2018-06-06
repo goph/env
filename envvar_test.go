@@ -133,9 +133,30 @@ func TestEnvVarSet_ErrorHandling_Panic(t *testing.T) {
 		err := recover()
 
 		if err == nil {
-			t.Fatal("Parse is expected to panic")
+			t.Error("Parse is expected to panic")
 		}
 	}()
 
 	envvarset.Parse(environment) // nolint:errcheck
+}
+
+func TestRedeclare(t *testing.T) {
+	envvarset := env.NewEnvVarSet(env.PanicOnError)
+
+	v := &valueStub{
+		typ: "valueStub",
+		err: errors.New("error"),
+	}
+
+	envvarset.Var(v, "value", "Value usage string")
+
+	defer func() {
+		err := recover()
+
+		if err == nil {
+			t.Error("Var is expected to panic when redeclaring a variable")
+		}
+	}()
+
+	envvarset.Var(v, "value", "Value usage string")
 }
