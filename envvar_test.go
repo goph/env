@@ -1,6 +1,7 @@
 package env_test
 
 import (
+	"bytes"
 	"errors"
 	"testing"
 
@@ -141,7 +142,11 @@ func TestEnvVarSet_ErrorHandling_Panic(t *testing.T) {
 }
 
 func TestRedeclare(t *testing.T) {
+	var buf bytes.Buffer
+
 	envvarset := env.NewEnvVarSet(env.PanicOnError)
+
+	envvarset.SetOutput(&buf)
 
 	v := &valueStub{
 		typ: "valueStub",
@@ -155,6 +160,12 @@ func TestRedeclare(t *testing.T) {
 
 		if err == nil {
 			t.Error("Var is expected to panic when redeclaring a variable")
+		}
+
+		errString := buf.String()
+
+		if errString != "value environment variable redefined: value\n" {
+			t.Error("expected error output")
 		}
 	}()
 

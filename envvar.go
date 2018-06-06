@@ -2,6 +2,7 @@ package env
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"strings"
 )
@@ -25,6 +26,7 @@ type EnvVarSet struct {
 	parsed        bool
 	vars          map[string]Value
 	errorHandling ErrorHandling
+	output io.Writer // nil means stderr; use out() accessor
 }
 
 // NewEnvVarSet returns a new, empty environment variable set.
@@ -49,10 +51,26 @@ func (s *EnvVarSet) Var(value Value, name string, usage string) {
 	if alreadyThere {
 		msg := fmt.Sprintf("%s environment variable redefined: %s", name, name)
 
+		fmt.Fprintln(s.out(), msg)
+
 		panic(msg) // Happens only if environment variables are declared with identical names
 	}
 
 	s.vars[name] = value
+}
+
+func (s *EnvVarSet) out() io.Writer {
+	if s.output == nil {
+		return os.Stderr
+	}
+
+	return s.output
+}
+
+// SetOutput sets the destination for usage and error messages.
+// If output is nil, os.Stderr is used.
+func (s *EnvVarSet) SetOutput(output io.Writer) {
+	s.output = output
 }
 
 // Parse parses environment variables according to the definitions in the EnvVarSet.
@@ -69,7 +87,7 @@ func (s *EnvVarSet) Parse(environment map[string]string) error {
 				case ContinueOnError:
 					return err
 				case ExitOnError:
-					fmt.Println(err)
+					fmt.Fprintln(s.out(), err)
 					os.Exit(2)
 				case PanicOnError:
 					panic(err)
