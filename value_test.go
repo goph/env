@@ -140,21 +140,21 @@ func TestGlobalValueVar(t *testing.T) {
 
 func testValue(t *testing.T, envvarset *env.EnvVarSet, vars *valueVars) {
 	environment := map[string]string{
-		"bool":     "true",
-		"duration": "1s",
-		"float32":  "172e12",
-		"float64":  "2718e28",
-		"int":      "22",
-		"int16":    "16",
-		"int32":    "32",
-		"int64":    "64",
-		"int8":     "8",
-		"string":   "string",
-		"uint":     "22",
-		"uint16":   "16",
-		"uint32":   "32",
-		"uint64":   "64",
-		"uint8":    "8",
+		"BOOL":     "true",
+		"DURATION": "1s",
+		"FLOAT32":  "172e12",
+		"FLOAT64":  "2718e28",
+		"INT":      "22",
+		"INT16":    "16",
+		"INT32":    "32",
+		"INT64":    "64",
+		"INT8":     "8",
+		"STRING":   "string",
+		"UINT":     "22",
+		"UINT16":   "16",
+		"UINT32":   "32",
+		"UINT64":   "64",
+		"UINT8":    "8",
 	}
 
 	err := envvarset.Parse(environment)
