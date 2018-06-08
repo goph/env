@@ -18,8 +18,8 @@ func Var(value Value, name string, usage string) {
 // Parse parses environment variables from os.Environ() according to the definitions in the EnvVarSet.
 // Must be called after all variables in the EnvVarSet
 // are defined and before variables are accessed by the program.
-func Parse() error {
-	return Environment.ParseEnviron(os.Environ())
+func Parse() {
+	Environment.ParseEnviron(os.Environ())
 }
 
 // Parsed returns true if the environment variables have been parsed.

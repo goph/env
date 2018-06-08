@@ -23,13 +23,9 @@ func TestEnvironment(t *testing.T) {
 
 	env.Var(v, "value", "Value usage string")
 
-	err := env.Parse()
+	env.Parse()
 
 	os.Clearenv()
-
-	if err != nil {
-		t.Fatal("Parse is expected to return a nil (non-error) value")
-	}
 
 	if !env.Parsed() {
 		t.Error("not parsed after Parse is called")
