@@ -21,10 +21,14 @@ const (
 	PanicOnError
 )
 
+// NormalizedName is an environment variable name that has been normalized according to rules
+// for the EnvVarSet (e.g. making variable names upper case, adding prefixes, etc).
+type NormalizedName string
+
 // EnvVarSet is a set of defined environment variables.
 type EnvVarSet struct {
 	parsed        bool
-	vars          map[string]*EnvVar
+	vars          map[NormalizedName]*EnvVar
 	errorHandling ErrorHandling
 	output        io.Writer // nil means stderr; use out() accessor
 }
@@ -67,10 +71,10 @@ func (s *EnvVarSet) Var(value Value, name string, usage string) {
 // AddEnvVar will add the environment variable to the EnvVarSet.
 func (s *EnvVarSet) AddEnvVar(envVar *EnvVar) {
 	if s.vars == nil {
-		s.vars = make(map[string]*EnvVar)
+		s.vars = make(map[NormalizedName]*EnvVar)
 	}
 
-	name := envVar.Name
+	name := NormalizedName(envVar.Name)
 
 	_, alreadyThere := s.vars[name]
 	if alreadyThere {
@@ -105,7 +109,7 @@ func (s *EnvVarSet) Parse(environment map[string]string) error {
 	s.parsed = true
 
 	for key, value := range environment {
-		if ev, ok := s.vars[key]; ok {
+		if ev, ok := s.vars[NormalizedName(key)]; ok {
 			err := ev.Value.Set(value)
 			if err != nil {
 				switch s.errorHandling {
