@@ -31,7 +31,7 @@ func (v *valueStub) Type() string {
 
 func TestEnvVarSet(t *testing.T) {
 	environment := map[string]string{
-		"value": "value",
+		"VALUE": "value",
 	}
 
 	envvarset := env.NewEnvVarSet(env.ContinueOnError)
@@ -64,7 +64,7 @@ func TestEnvVarSet(t *testing.T) {
 
 func TestEnvVarSet_ParseEnviron(t *testing.T) {
 	environment := []string{
-		"value=value=value",
+		"VALUE=value=value",
 	}
 
 	envvarset := env.NewEnvVarSet(env.ContinueOnError)
@@ -97,7 +97,7 @@ func TestEnvVarSet_ParseEnviron(t *testing.T) {
 
 func TestEnvVarSet_ErrorHandling_ContinueOnError(t *testing.T) {
 	environment := map[string]string{
-		"value": "value",
+		"VALUE": "value",
 	}
 
 	envvarset := env.NewEnvVarSet(env.ContinueOnError)
@@ -118,7 +118,7 @@ func TestEnvVarSet_ErrorHandling_ContinueOnError(t *testing.T) {
 
 func TestEnvVarSet_ErrorHandling_Panic(t *testing.T) {
 	environment := map[string]string{
-		"value": "value",
+		"VALUE": "value",
 	}
 
 	envvarset := env.NewEnvVarSet(env.PanicOnError)
@@ -164,7 +164,7 @@ func TestRedeclare(t *testing.T) {
 
 		errString := buf.String()
 
-		if errString != "value environment variable redefined: value\n" {
+		if errString != "VALUE environment variable redefined: value\n" {
 			t.Error("expected error output")
 		}
 	}()

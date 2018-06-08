@@ -74,7 +74,7 @@ func (s *EnvVarSet) AddEnvVar(envVar *EnvVar) {
 		s.vars = make(map[NormalizedName]*EnvVar)
 	}
 
-	name := NormalizedName(envVar.Name)
+	name := s.normalizeVarName(envVar.Name)
 
 	_, alreadyThere := s.vars[name]
 	if alreadyThere {
@@ -102,14 +102,33 @@ func (s *EnvVarSet) SetOutput(output io.Writer) {
 	s.output = output
 }
 
+var defaultReplacer = strings.NewReplacer("-", "_", ".", "_")
+
+// DefaultNormalizeFunc formats variable names to upper case and replaces "-." chars with "_".
+func DefaultNormalizeFunc(_ *EnvVarSet, name string) NormalizedName {
+	return NormalizedName(defaultReplacer.Replace(strings.ToUpper(name)))
+}
+
+// GetNormalizeFunc returns the previously set NormalizeFunc.
+// If not set, it returns the default normalization function.
+func (s *EnvVarSet) GetNormalizeFunc() func(s *EnvVarSet, name string) NormalizedName {
+	return DefaultNormalizeFunc
+}
+
+func (s *EnvVarSet) normalizeVarName(name string) NormalizedName {
+	fn := s.GetNormalizeFunc()
+
+	return fn(s, name)
+}
+
 // Parse parses environment variables according to the definitions in the EnvVarSet.
 // Must be called after all variables in the EnvVarSet
 // are defined and before variables are accessed by the program.
 func (s *EnvVarSet) Parse(environment map[string]string) error {
 	s.parsed = true
 
-	for key, value := range environment {
-		if ev, ok := s.vars[NormalizedName(key)]; ok {
+	for name, value := range environment {
+		if ev, ok := s.vars[NormalizedName(name)]; ok {
 			err := ev.Value.Set(value)
 			if err != nil {
 				switch s.errorHandling {

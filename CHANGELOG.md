@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - `NormalizedName` for normalized environment variable names
+- Variable name normalization with a sane default
 
 
 ## [0.2.0] - 2018-06-06

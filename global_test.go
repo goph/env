@@ -10,7 +10,7 @@ import (
 func TestEnvironment(t *testing.T) {
 	os.Clearenv()
 
-	os.Setenv("value", "value")
+	os.Setenv("VALUE", "value")
 
 	if env.Parsed() {
 		t.Fatal("parsed before Parse is called")
