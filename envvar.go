@@ -56,6 +56,11 @@ func NewEnvVarSet(errorHandling ErrorHandling) *EnvVarSet {
 // that turns a comma-separated string into a slice of strings by giving the slice the methods of Value;
 // in particular, Set would decompose the comma-separated string into the slice.
 func (s *EnvVarSet) Var(value Value, name string, usage string) {
+	s.VarE(value, name, usage)
+}
+
+// VarE is like Var, but returns the created EnvVar.
+func (s *EnvVarSet) VarE(value Value, name string, usage string) *EnvVar {
 	envVar := &EnvVar{
 		Name:  name,
 		Usage: usage,
@@ -63,6 +68,8 @@ func (s *EnvVarSet) Var(value Value, name string, usage string) {
 	}
 
 	s.AddEnvVar(envVar)
+
+	return envVar
 }
 
 // AddEnvVar will add the environment variable to the EnvVarSet.

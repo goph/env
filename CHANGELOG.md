@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - `NormalizedName` for normalized environment variable names
 - Variable name normalization with a sane default
 - `NormalizeFunc` to make variable normalization configurable
+- `VarE` function to return the created environment variable
 
 ### Changed
 
