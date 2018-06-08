@@ -15,6 +15,11 @@ func Var(value Value, name string, usage string) {
 	Environment.Var(value, name, usage)
 }
 
+// VarE is like Var, but returns the created EnvVar.
+func VarE(value Value, name string, usage string) *EnvVar {
+	return Environment.VarE(value, name, usage)
+}
+
 // Parse parses environment variables from os.Environ() according to the definitions in the EnvVarSet.
 // Must be called after all variables in the EnvVarSet
 // are defined and before variables are accessed by the program.
