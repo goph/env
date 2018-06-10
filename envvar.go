@@ -14,10 +14,10 @@ const (
 	// ContinueOnError will return an err from Parse() if an error is found
 	ContinueOnError ErrorHandling = iota
 
-	// ExitOnError will call os.Exit(2) if an error is found when parsing
+	// ExitOnError will call os.Exit(2) if an error is found
 	ExitOnError
 
-	// PanicOnError will panic() if an error is found when parsing environment variables
+	// PanicOnError will panic() if an error is found
 	PanicOnError
 )
 
