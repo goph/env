@@ -38,14 +38,14 @@ func (s *EnvVarSet) Int(name string, value int, usage string) *int {
 	return p
 }
 
-// IntVar defines a int environment variable with specified name, default value, and usage string.
-// The argument p points to a int variable in which to store the value of the environment variable.
+// IntVar defines an int environment variable with specified name, default value, and usage string.
+// The argument p points to an int variable in which to store the value of the environment variable.
 func IntVar(p *int, name string, value int, usage string) {
 	Environment.IntVar(p, name, value, usage)
 }
 
-// Int defines a int environment variable with specified name, default value, and usage string.
-// The return value is the address of a int variable that stores the value of the environment variable.
+// Int defines an int environment variable with specified name, default value, and usage string.
+// The return value is the address of an int variable that stores the value of the environment variable.
 func Int(name string, value int, usage string) *int {
 	return Environment.Int(name, value, usage)
 }

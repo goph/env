@@ -22,14 +22,14 @@ func (*uint8Value) Type() string { return "uint8" }
 
 func (i *uint8Value) String() string { return strconv.FormatUint(uint64(*i), 10) }
 
-// Uint8Var defines an uint8 environment variable with specified name, default value, and usage string.
-// The argument p points to an uint8 variable in which to store the value of the environment variable.
+// Uint8Var defines a uint8 environment variable with specified name, default value, and usage string.
+// The argument p points to a uint8 variable in which to store the value of the environment variable.
 func (s *EnvVarSet) Uint8Var(p *uint8, name string, value uint8, usage string) {
 	s.Var(newUint8Value(value, p), name, usage)
 }
 
-// Uint8 defines an uint8 environment variable with specified name, default value, and usage string.
-// The return value is the address of an uint8 variable that stores the value of the environment variable.
+// Uint8 defines a uint8 environment variable with specified name, default value, and usage string.
+// The return value is the address of a uint8 variable that stores the value of the environment variable.
 func (s *EnvVarSet) Uint8(name string, value uint8, usage string) *uint8 {
 	p := new(uint8)
 

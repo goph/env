@@ -22,14 +22,14 @@ func (*uint16Value) Type() string { return "uint16" }
 
 func (i *uint16Value) String() string { return strconv.FormatUint(uint64(*i), 10) }
 
-// Uint16Var defines an uint16 environment variable with specified name, default value, and usage string.
-// The argument p points to an uint16 variable in which to store the value of the environment variable.
+// Uint16Var defines a uint16 environment variable with specified name, default value, and usage string.
+// The argument p points to a uint16 variable in which to store the value of the environment variable.
 func (s *EnvVarSet) Uint16Var(p *uint16, name string, value uint16, usage string) {
 	s.Var(newUint16Value(value, p), name, usage)
 }
 
-// Uint16 defines an uint16 environment variable with specified name, default value, and usage string.
-// The return value is the address of an uint16 variable that stores the value of the environment variable.
+// Uint16 defines a uint16 environment variable with specified name, default value, and usage string.
+// The return value is the address of a uint16 variable that stores the value of the environment variable.
 func (s *EnvVarSet) Uint16(name string, value uint16, usage string) *uint16 {
 	p := new(uint16)
 

@@ -22,14 +22,14 @@ func (*uint64Value) Type() string { return "uint64" }
 
 func (i *uint64Value) String() string { return strconv.FormatUint(uint64(*i), 10) }
 
-// Uint64Var defines an uint64 environment variable with specified name, default value, and usage string.
-// The argument p points to an uint64 variable in which to store the value of the environment variable.
+// Uint64Var defines a uint64 environment variable with specified name, default value, and usage string.
+// The argument p points to a uint64 variable in which to store the value of the environment variable.
 func (s *EnvVarSet) Uint64Var(p *uint64, name string, value uint64, usage string) {
 	s.Var(newUint64Value(value, p), name, usage)
 }
 
-// Uint64 defines an uint64 environment variable with specified name, default value, and usage string.
-// The return value is the address of an uint64 variable that stores the value of the environment variable.
+// Uint64 defines a uint64 environment variable with specified name, default value, and usage string.
+// The return value is the address of a uint64 variable that stores the value of the environment variable.
 func (s *EnvVarSet) Uint64(name string, value uint64, usage string) *uint64 {
 	p := new(uint64)
 

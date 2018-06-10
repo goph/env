@@ -38,14 +38,14 @@ func (s *EnvVarSet) Int32(name string, value int32, usage string) *int32 {
 	return p
 }
 
-// Int32Var defines a int32 environment variable with specified name, default value, and usage string.
-// The argument p points to a int32 variable in which to store the value of the environment variable.
+// Int32Var defines an int32 environment variable with specified name, default value, and usage string.
+// The argument p points to an int32 variable in which to store the value of the environment variable.
 func Int32Var(p *int32, name string, value int32, usage string) {
 	Environment.Int32Var(p, name, value, usage)
 }
 
-// Int32 defines a int32 environment variable with specified name, default value, and usage string.
-// The return value is the address of a int32 variable that stores the value of the environment variable.
+// Int32 defines an int32 environment variable with specified name, default value, and usage string.
+// The return value is the address of an int32 variable that stores the value of the environment variable.
 func Int32(name string, value int32, usage string) *int32 {
 	return Environment.Int32(name, value, usage)
 }
