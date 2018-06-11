@@ -40,6 +40,9 @@ type EnvVar struct {
 
 	// Value as set
 	Value Value
+
+	// DefaultValue is shown in the usage message
+	DefaultValue string
 }
 
 // NewEnvVarSet returns a new, empty environment variable set.
@@ -62,9 +65,10 @@ func (s *EnvVarSet) Var(value Value, name string, usage string) {
 // VarE is like Var, but returns the created EnvVar.
 func (s *EnvVarSet) VarE(value Value, name string, usage string) *EnvVar {
 	envVar := &EnvVar{
-		Name:  name,
-		Usage: usage,
-		Value: value,
+		Name:         name,
+		Usage:        usage,
+		Value:        value,
+		DefaultValue: value.String(),
 	}
 
 	s.AddEnvVar(envVar)

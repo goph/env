@@ -24,7 +24,7 @@ func VarE(value Value, name string, usage string) *EnvVar {
 // Must be called after all variables in the EnvVarSet
 // are defined and before variables are accessed by the program.
 func Parse() {
-	Environment.ParseEnviron(os.Environ())
+	Environment.ParseEnviron(os.Environ()) // nolint:errcheck
 }
 
 // Parsed returns true if the environment variables have been parsed.
