@@ -171,3 +171,15 @@ func TestRedeclare(t *testing.T) {
 
 	envvarset.Var(v, "value", "Value usage string")
 }
+
+func TestEnvVarSet_HasEnvVars(t *testing.T) {
+	envvarset := env.NewEnvVarSet(env.ContinueOnError)
+
+	v := &valueStub{}
+
+	envvarset.Var(v, "value", "value usage string")
+
+	if !envvarset.HasEnvVars() {
+		t.Error("EnvVarSet is expected to have at least one environment variable defined")
+	}
+}

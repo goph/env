@@ -110,6 +110,11 @@ func (s *EnvVarSet) SetOutput(output io.Writer) {
 	s.output = output
 }
 
+// HasEnvVars returns a bool to indicate if the EnvVarSet has any environment variables defined.
+func (s *EnvVarSet) HasEnvVars() bool {
+	return len(s.vars) > 0
+}
+
 // Parse parses environment variables according to the definitions in the EnvVarSet.
 // Must be called after all variables in the EnvVarSet
 // are defined and before variables are accessed by the program.
