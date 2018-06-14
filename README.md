@@ -1,6 +1,6 @@
 # Env
 
-[![Build Status](https://img.shields.io/travis/goph/env.svg?style=flat-square)](https://travis-ci.org/goph/env)
+[![Build Status](https://travis-ci.com/goph/env.svg?branch=master)](https://travis-ci.com/goph/env)
 [![Go Report Card](https://goreportcard.com/badge/github.com/goph/env?style=flat-square)](https://goreportcard.com/report/github.com/goph/env)
 [![GolangCI](https://golangci.com/badges/github.com/goph/env.svg)](https://golangci.com)
 [![GoDoc](http://img.shields.io/badge/godoc-reference-5272B4.svg?style=flat-square)](https://godoc.org/github.com/goph/env)
