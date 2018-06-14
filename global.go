@@ -31,3 +31,8 @@ func Parse() {
 func Parsed() bool {
 	return Environment.Parsed()
 }
+
+// PrintDefaults prints to standard error the default values of all defined environment variables.
+func PrintDefaults() {
+	Environment.PrintDefaults()
+}

@@ -7,7 +7,24 @@ import (
 	"strings"
 )
 
+// PrintDefaults prints, to standard error unless configured
+// otherwise, the default values of all defined environment variables in the set.
+func (s *EnvVarSet) PrintDefaults() {
+	usages := s.EnvVarUsages()
+
+	fmt.Fprint(s.out(), usages)
+}
+
+// EnvVarUsages returns a string containing the usage information for all environment variables
+// in the set.
 func (s *EnvVarSet) EnvVarUsages() string {
+	return s.EnvVarUsagesWrapped(0)
+}
+
+// EnvVarUsages returns a string containing the usage information for all environment variables
+// in the set.
+// Wrapped to `cols` columns (0 for no wrapping)
+func (s *EnvVarSet) EnvVarUsagesWrapped(cols int) string {
 	buf := new(bytes.Buffer)
 
 	lines := make([]string, 0, len(s.vars))
@@ -56,7 +73,7 @@ func (s *EnvVarSet) EnvVarUsages() string {
 		sidx := strings.Index(line, "\x00")
 		spacing := strings.Repeat(" ", maxlen-sidx)
 		// maxlen + 2 comes from + 1 for the \x00 and + 1 for the (deliberate) off-by-one in maxlen-sidx
-		fmt.Fprintln(buf, line[:sidx], spacing, wrap(maxlen+2, 0, line[sidx+1:]))
+		fmt.Fprintln(buf, line[:sidx], spacing, wrap(maxlen+2, cols, line[sidx+1:]))
 	}
 
 	return buf.String()
