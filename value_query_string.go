@@ -11,6 +11,11 @@ func newQueryStringValue(val map[string]string, p *map[string]string) *queryStri
 }
 
 func (p queryStringValue) Set(val string) error {
+	// Clear the map from default values
+	for k := range p {
+		delete(p, k)
+	}
+
 	for _, v := range strings.Split(val, "&") {
 		param := strings.SplitN(v, "=", 2)
 		if len(param) != 2 {
