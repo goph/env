@@ -46,14 +46,14 @@ func (p queryStringValue) String() string {
 	return query
 }
 
-// QueryStringVar defines a string map environment variable with specified name, default value, and usage string.
-// The argument p points to a string map variable in which to store the value of the environment variable.
+// QueryStringVar defines a query string environment variable with specified name, default value, and usage string.
+// The argument p points to a query string (string map) variable in which to store the value of the environment variable.
 func (s *EnvVarSet) QueryStringVar(p *map[string]string, name string, value map[string]string, usage string) {
 	s.Var(newQueryStringValue(value, p), name, usage)
 }
 
-// QueryString defines a string map environment variable with specified name, default value, and usage string.
-// The return value is the address of a string map variable that stores the value of the environment variable.
+// QueryString defines a query string environment variable with specified name, default value, and usage string.
+// The return value is the address of a query string (string map) variable that stores the value of the environment variable.
 func (s *EnvVarSet) QueryString(name string, value map[string]string, usage string) *map[string]string {
 	p := new(map[string]string)
 
@@ -62,14 +62,14 @@ func (s *EnvVarSet) QueryString(name string, value map[string]string, usage stri
 	return p
 }
 
-// QueryStringVar defines a string map environment variable with specified name, default value, and usage string.
-// The argument p points to a string map variable in which to store the value of the environment variable.
+// QueryStringVar defines a query string environment variable with specified name, default value, and usage string.
+// The argument p points to a query string (string map) variable in which to store the value of the environment variable.
 func QueryStringVar(p *map[string]string, name string, value map[string]string, usage string) {
 	Environment.QueryStringVar(p, name, value, usage)
 }
 
-// QueryString defines a string map environment variable with specified name, default value, and usage string.
-// The return value is the address of a string map variable that stores the value of the environment variable.
+// QueryString defines a query string environment variable with specified name, default value, and usage string.
+// The return value is the address of a query string (string map) variable that stores the value of the environment variable.
 func QueryString(name string, value map[string]string, usage string) *map[string]string {
 	return Environment.QueryString(name, value, usage)
 }
