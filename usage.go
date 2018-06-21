@@ -91,7 +91,7 @@ func UnquoteUsage(envVar *EnvVar) (name string, usage string) {
 		if usage[i] == '`' {
 			for j := i + 1; j < len(usage); j++ {
 				if usage[j] == '`' {
-					name = usage[i+1: j]
+					name = usage[i+1 : j]
 					usage = usage[:i] + name + usage[j+1:]
 					return name, usage
 				}
