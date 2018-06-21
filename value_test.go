@@ -20,6 +20,7 @@ type valueVars struct {
 	int8Var        *int8
 	queryStringVar *map[string]string
 	stringVar      *string
+	stringSliceVar *[]string
 	uintVar        *uint
 	uint16Var      *uint16
 	uint32Var      *uint32
@@ -40,6 +41,7 @@ func newValueVars() *valueVars {
 		int8Var:        new(int8),
 		queryStringVar: new(map[string]string),
 		stringVar:      new(string),
+		stringSliceVar: new([]string),
 		uintVar:        new(uint),
 		uint16Var:      new(uint16),
 		uint32Var:      new(uint32),
@@ -63,6 +65,7 @@ func TestValue(t *testing.T) {
 	vars.int8Var = envvarset.Int8("int8", 0, "int8 value")
 	vars.queryStringVar = envvarset.QueryString("query-string", map[string]string{}, "query string value")
 	vars.stringVar = envvarset.String("string", "", "string value")
+	vars.stringSliceVar = envvarset.StringSlice("string-slice", []string{}, "string slice value")
 	vars.uintVar = envvarset.Uint("uint", 0, "uint value")
 	vars.uint16Var = envvarset.Uint16("uint16", 0, "uint16 value")
 	vars.uint32Var = envvarset.Uint32("uint32", 0, "uint32 value")
@@ -87,6 +90,7 @@ func TestValueVar(t *testing.T) {
 	envvarset.Int8Var(vars.int8Var, "int8", 0, "int8 value")
 	envvarset.QueryStringVar(vars.queryStringVar, "query-string", map[string]string{}, "string value")
 	envvarset.StringVar(vars.stringVar, "string", "", "string value")
+	envvarset.StringSliceVar(vars.stringSliceVar, "string-slice", []string{}, "string slice value")
 	envvarset.UintVar(vars.uintVar, "uint", 0, "uint value")
 	envvarset.Uint16Var(vars.uint16Var, "uint16", 0, "uint16 value")
 	envvarset.Uint32Var(vars.uint32Var, "uint32", 0, "uint32 value")
@@ -111,6 +115,7 @@ func TestGlobalValue(t *testing.T) {
 	vars.int8Var = env.Int8("int8", 0, "int8 value")
 	vars.queryStringVar = env.QueryString("query-string", map[string]string{}, "query string value")
 	vars.stringVar = env.String("string", "", "string value")
+	vars.stringSliceVar = env.StringSlice("string-slice", []string{}, "string slice value")
 	vars.uintVar = env.Uint("uint", 0, "uint value")
 	vars.uint16Var = env.Uint16("uint16", 0, "uint16 value")
 	vars.uint32Var = env.Uint32("uint32", 0, "uint32 value")
@@ -135,6 +140,7 @@ func TestGlobalValueVar(t *testing.T) {
 	env.Int8Var(vars.int8Var, "int8", 0, "int8 value")
 	env.QueryStringVar(vars.queryStringVar, "query-string", map[string]string{}, "string value")
 	env.StringVar(vars.stringVar, "string", "", "string value")
+	env.StringSliceVar(vars.stringSliceVar, "string-slice", []string{}, "string slice value")
 	env.UintVar(vars.uintVar, "uint", 0, "uint value")
 	env.Uint16Var(vars.uint16Var, "uint16", 0, "uint16 value")
 	env.Uint32Var(vars.uint32Var, "uint32", 0, "uint32 value")
@@ -157,6 +163,7 @@ func testValue(t *testing.T, envvarset *env.EnvVarSet, vars *valueVars) {
 		"INT8":         "8",
 		"QUERY_STRING": "key=value&key2=value2",
 		"STRING":       "string",
+		"STRING_SLICE": "one,two,three,four",
 		"UINT":         "22",
 		"UINT16":       "16",
 		"UINT32":       "32",
@@ -212,6 +219,12 @@ func testValue(t *testing.T, envvarset *env.EnvVarSet, vars *valueVars) {
 
 	if *vars.stringVar != "string" {
 		t.Error("string var should be `string`, got: ", *vars.stringVar)
+	}
+
+	for key, value := range []string{"one", "two", "three", "four"} {
+		if (*vars.stringSliceVar)[key] != value {
+			t.Errorf("string slice var[%d] should be %s, got: %s", key, value, (*vars.stringSliceVar)[key])
+		}
 	}
 
 	if *vars.uintVar != 22 {
