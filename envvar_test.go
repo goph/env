@@ -172,6 +172,30 @@ func TestRedeclare(t *testing.T) {
 	envvarset.Var(v, "value", "Value usage string")
 }
 
+func TestEnvVarSet_VisitAll(t *testing.T) {
+	envvarset := env.NewEnvVarSet(env.ContinueOnError)
+
+	names := map[string]bool{
+		"A": false,
+		"B": false,
+		"C": false,
+		"D": false,
+	}
+	for name := range names {
+		envvarset.Bool(name, false, "")
+	}
+
+	envvarset.VisitAll(func(e *env.EnvVar) {
+		names[e.Name] = true
+	})
+
+	for name, visited := range names {
+		if !visited {
+			t.Errorf("variable %q is expected to be visited", name)
+		}
+	}
+}
+
 func TestEnvVarSet_HasEnvVars(t *testing.T) {
 	envvarset := env.NewEnvVarSet(env.ContinueOnError)
 
