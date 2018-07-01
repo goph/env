@@ -110,6 +110,18 @@ func (s *EnvVarSet) SetOutput(output io.Writer) {
 	s.output = output
 }
 
+// VisitAll visits the environment variables,
+// calling fn for each. It visits all variables, even those not set.
+func (s *EnvVarSet) VisitAll(fn func(*EnvVar)) {
+	if len(s.vars) == 0 {
+		return
+	}
+
+	for _, envVar := range s.vars {
+		fn(envVar)
+	}
+}
+
 // HasEnvVars returns a bool to indicate if the EnvVarSet has any environment variables defined.
 func (s *EnvVarSet) HasEnvVars() bool {
 	return len(s.vars) > 0
