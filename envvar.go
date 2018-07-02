@@ -25,6 +25,7 @@ const (
 type EnvVarSet struct {
 	parsed            bool
 	vars              map[NormalizedName]*EnvVar
+	orderedVars       []*EnvVar
 	errorHandling     ErrorHandling
 	output            io.Writer // nil means stderr; use out() accessor
 	normalizeNameFunc NormalizeFunc
@@ -94,6 +95,7 @@ func (s *EnvVarSet) AddEnvVar(envVar *EnvVar) {
 	}
 
 	s.vars[name] = envVar
+	s.orderedVars = append(s.orderedVars, envVar)
 }
 
 func (s *EnvVarSet) out() io.Writer {
