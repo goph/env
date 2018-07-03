@@ -112,14 +112,14 @@ func (s *EnvVarSet) SetOutput(output io.Writer) {
 	s.output = output
 }
 
-// VisitAll visits the environment variables,
+// VisitAll visits the environment variables in primordial order,
 // calling fn for each. It visits all variables, even those not set.
 func (s *EnvVarSet) VisitAll(fn func(*EnvVar)) {
-	if len(s.vars) == 0 {
+	if len(s.orderedVars) == 0 {
 		return
 	}
 
-	for _, envVar := range s.vars {
+	for _, envVar := range s.orderedVars {
 		fn(envVar)
 	}
 }

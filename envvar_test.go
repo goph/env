@@ -196,6 +196,23 @@ func TestEnvVarSet_VisitAll(t *testing.T) {
 	}
 }
 
+func TestEnvVarSet_VisitAll_Order(t *testing.T) {
+	envvarset := env.NewEnvVarSet(env.ContinueOnError)
+
+	names := []string{"C", "B", "A", "D"}
+	for _, name := range names {
+		envvarset.Bool(name, false, "")
+	}
+
+	i := 0
+	envvarset.VisitAll(func(v *env.EnvVar) {
+		if names[i] != v.Name {
+			t.Errorf("Incorrect order. Expected %v, got %v", names[i], v.Name)
+		}
+		i++
+	})
+}
+
 func TestEnvVarSet_HasEnvVars(t *testing.T) {
 	envvarset := env.NewEnvVarSet(env.ContinueOnError)
 
