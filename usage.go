@@ -3,7 +3,6 @@ package env
 import (
 	"bytes"
 	"fmt"
-	"sort"
 	"strings"
 )
 
@@ -31,17 +30,8 @@ func (s *EnvVarSet) EnvVarUsagesWrapped(cols int) string {
 
 	maxlen := 0
 
-	var keys []string
-
-	for key := range s.vars {
-		keys = append(keys, string(key))
-	}
-
-	sort.Strings(keys)
-
-	for _, key := range keys {
-		name := NormalizedName(key)
-		v := s.vars[name]
+	s.VisitAll(func(v *EnvVar) {
+		name := s.normalizeVarName(v.Name)
 
 		line := fmt.Sprintf("      %s", name)
 
@@ -67,7 +57,7 @@ func (s *EnvVarSet) EnvVarUsagesWrapped(cols int) string {
 		}
 
 		lines = append(lines, line)
-	}
+	})
 
 	for _, line := range lines {
 		sidx := strings.Index(line, "\x00")
@@ -91,7 +81,7 @@ func UnquoteUsage(envVar *EnvVar) (name string, usage string) {
 		if usage[i] == '`' {
 			for j := i + 1; j < len(usage); j++ {
 				if usage[j] == '`' {
-					name = usage[i+1 : j]
+					name = usage[i+1: j]
 					usage = usage[:i] + name + usage[j+1:]
 					return name, usage
 				}

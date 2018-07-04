@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - VisitAll function
 - Store order of environment variables
 
+### Changed
+
+- Variable usage lists variables in primordial order
+
 
 ## [0.6.0] - 2018-06-22
 
