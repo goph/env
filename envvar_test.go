@@ -3,6 +3,7 @@ package env_test
 import (
 	"bytes"
 	"errors"
+	"sort"
 	"testing"
 
 	"github.com/goph/env"
@@ -175,29 +176,25 @@ func TestRedeclare(t *testing.T) {
 func TestEnvVarSet_VisitAll(t *testing.T) {
 	envvarset := env.NewEnvVarSet(env.ContinueOnError)
 
-	names := map[string]bool{
-		"A": false,
-		"B": false,
-		"C": false,
-		"D": false,
-	}
-	for name := range names {
+	names := []string{"C", "B", "A", "D"}
+	for _, name := range names {
 		envvarset.Bool(name, false, "")
 	}
 
-	envvarset.VisitAll(func(e *env.EnvVar) {
-		names[e.Name] = true
-	})
+	sort.Strings(names)
 
-	for name, visited := range names {
-		if !visited {
-			t.Errorf("variable %q is expected to be visited", name)
+	i := 0
+	envvarset.VisitAll(func(v *env.EnvVar) {
+		if names[i] != v.Name {
+			t.Errorf("Incorrect order. Expected %v, got %v", names[i], v.Name)
 		}
-	}
+		i++
+	})
 }
 
 func TestEnvVarSet_VisitAll_Order(t *testing.T) {
 	envvarset := env.NewEnvVarSet(env.ContinueOnError)
+	envvarset.SortVars = false
 
 	names := []string{"C", "B", "A", "D"}
 	for _, name := range names {

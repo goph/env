@@ -37,6 +37,7 @@ func (s *EnvVarSet) normalizeVarName(name string) NormalizedName {
 // will be matched against these translated names.
 func (s *EnvVarSet) SetNormalizeFunc(fn NormalizeFunc) {
 	s.normalizeNameFunc = fn
+	s.sortedVars = s.sortedVars[:0]
 
 	for name, v := range s.vars {
 		normalizedName := s.normalizeVarName(v.Name)
