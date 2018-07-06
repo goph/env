@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"sort"
 	"strings"
 )
 
@@ -23,8 +24,14 @@ const (
 
 // EnvVarSet is a set of defined environment variables.
 type EnvVarSet struct {
+	// SortVars is used to indicate, if user wants to have sorted environment variables in
+	// help/usage messages.
+	SortVars bool
+
 	parsed            bool
 	vars              map[NormalizedName]*EnvVar
+	orderedVars       []*EnvVar
+	sortedVars        []*EnvVar
 	errorHandling     ErrorHandling
 	output            io.Writer // nil means stderr; use out() accessor
 	normalizeNameFunc NormalizeFunc
@@ -45,9 +52,12 @@ type EnvVar struct {
 	DefaultValue string
 }
 
-// NewEnvVarSet returns a new, empty environment variable set.
+// NewEnvVarSet returns a new, empty environment variable set with the specified
+// error handling property and SortFlags set to true.
 func NewEnvVarSet(errorHandling ErrorHandling) *EnvVarSet {
 	return &EnvVarSet{
+		SortVars: true,
+
 		errorHandling: errorHandling,
 	}
 }
@@ -94,6 +104,7 @@ func (s *EnvVarSet) AddEnvVar(envVar *EnvVar) {
 	}
 
 	s.vars[name] = envVar
+	s.orderedVars = append(s.orderedVars, envVar)
 }
 
 func (s *EnvVarSet) out() io.Writer {
@@ -110,16 +121,48 @@ func (s *EnvVarSet) SetOutput(output io.Writer) {
 	s.output = output
 }
 
-// VisitAll visits the environment variables,
-// calling fn for each. It visits all variables, even those not set.
+// VisitAll visits the environment variables in lexicographical order or
+// in primordial order if f.SortVars is false, calling fn for each.
+// It visits all variables, even those not set.
 func (s *EnvVarSet) VisitAll(fn func(*EnvVar)) {
 	if len(s.vars) == 0 {
 		return
 	}
 
-	for _, envVar := range s.vars {
+	var envVars []*EnvVar
+	if s.SortVars {
+		if len(s.vars) != len(s.sortedVars) {
+			s.sortedVars = sortVars(s.vars)
+		}
+		envVars = s.sortedVars
+	} else {
+		envVars = s.orderedVars
+	}
+
+	for _, envVar := range envVars {
 		fn(envVar)
 	}
+}
+
+// sortVars returns the environment variables as a slice in lexicographical sorted order.
+func sortVars(envVars map[NormalizedName]*EnvVar) []*EnvVar {
+	list := make(sort.StringSlice, len(envVars))
+	i := 0
+
+	for k := range envVars {
+		list[i] = string(k)
+		i++
+	}
+
+	list.Sort()
+
+	result := make([]*EnvVar, len(list))
+
+	for i, name := range list {
+		result[i] = envVars[NormalizedName(name)]
+	}
+
+	return result
 }
 
 // HasEnvVars returns a bool to indicate if the EnvVarSet has any environment variables defined.

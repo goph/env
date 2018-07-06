@@ -37,8 +37,9 @@ func PrintDefaults() {
 	Environment.PrintDefaults()
 }
 
-// VisitAll visits the environment variables,
-// calling fn for each. It visits all variables, even those not set.
+// VisitAll visits the environment variables in lexicographical order or
+// in primordial order if f.SortVars is false, calling fn for each.
+// It visits all variables, even those not set.
 func VisitAll(fn func(*EnvVar)) {
 	Environment.VisitAll(fn)
 }
