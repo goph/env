@@ -43,3 +43,8 @@ func PrintDefaults() {
 func VisitAll(fn func(*EnvVar)) {
 	Environment.VisitAll(fn)
 }
+
+// Lookup returns the EnvVar structure of the named environment variable, returning nil if none exists.
+func Lookup(name string) *EnvVar {
+	return Environment.Lookup(name)
+}
