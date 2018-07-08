@@ -221,3 +221,15 @@ func TestEnvVarSet_HasEnvVars(t *testing.T) {
 		t.Error("EnvVarSet is expected to have at least one environment variable defined")
 	}
 }
+
+func TestLookup(t *testing.T) {
+	envvarset := env.NewEnvVarSet(env.ContinueOnError)
+
+	envvarset.Bool("variable", false, "")
+
+	envVar := envvarset.Lookup("variable")
+
+	if envVar.Name != "variable" {
+		t.Error("expected to return the requested variable")
+	}
+}

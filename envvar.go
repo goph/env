@@ -170,6 +170,11 @@ func (s *EnvVarSet) HasEnvVars() bool {
 	return len(s.vars) > 0
 }
 
+// Lookup returns the EnvVar structure of the named environment variable, returning nil if none exists.
+func (s *EnvVarSet) Lookup(name string) *EnvVar {
+	return s.vars[s.normalizeVarName(name)]
+}
+
 // Parse parses environment variables according to the definitions in the EnvVarSet.
 // Must be called after all variables in the EnvVarSet
 // are defined and before variables are accessed by the program.
