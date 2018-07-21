@@ -11,37 +11,30 @@
 
 The interface follows closely the [flag](https://golang.org/pkg/flag)/[pflag](https://github.com/spf13/pflag) packages.
 
-Define environment variables using env.String(), Bool(), Int(), etc.
-
 ```go
-var intVar *int = env.Int("int", 1234, "help message for int")
-```
+package main
 
-If you like, you can bind the environment variable to a variable using the Var() functions.
+import "github.com/goph/env"
 
-```go
-var intVar int
-
-func init() {
-    env.IntVar(&intVar, "int", 1234, "help message for int")
+func main() {
+	// Define environment variables using env.String(), Bool(), Int(), etc.
+	var intValue *int = env.Int("int", 1234, "help message for int")
+	
+	// If you like, you can bind the environment variable to a variable using the Var() functions.
+	var intVar int
+	env.IntVar(&intVar, "int", 1234, "help message for int")
+	
+	// Or you can create custom variables that satisfy the Value interface (with pointer receivers)
+	// and couple them to variable parsing.
+	//
+	// For such environment variables, the default value is just the initial value of the variable.
+	var intVal env.Value
+	env.Var(&intVal, "int", "help message for int")
+	
+	// After all variables are defined.
+	env.Parse()
 }
 ```
-
-Or you can create custom variables that satisfy the Value interface (with pointer receivers) and couple them to variable parsing by
-
-```go
-env.Var(&intVal, "int", "help message for int")
-```
-
-For such environment variables, the default value is just the initial value of the variable.
-
-After all variables are defined, call
-
-```go
-env.Parse()
-```
-
-to parse the environment into the defined variables.
 
 
 ## Development
