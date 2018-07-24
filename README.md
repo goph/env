@@ -42,13 +42,19 @@ func main() {
 When all coding and testing is done, please run the test suite:
 
 ``` bash
-$ go test
+$ make test # go test
 ```
 
-For linting we use [GolangCI](https://golangci.com/). You can run the linter locally using it's [binary version](https://github.com/golangci/golangci-lint#ci-installation):
+For linting we use [GolangCI](https://golangci.com/).
 
 ```bash
-$ golangci-lint run
+$ make lint # golangci-lint run
+```
+
+You can run the whole suite with:
+
+```bash
+$ make check
 ```
 
 
