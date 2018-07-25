@@ -9,6 +9,7 @@ setup:: setup-env ## Setup the project for development
 setup-env: bin/golangci-lint ## Setup environment
 
 bin/golangci-lint: ## Install golangci linter
+	@mkdir -p ./bin/
 	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | bash -s -- -b ./bin/ v${GOLANGCI_VERSION}
 
 .PHONY: check
