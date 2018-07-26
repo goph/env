@@ -12,6 +12,10 @@ bin/golangci-lint: ## Install golangci linter
 	@mkdir -p ./bin/
 	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | bash -s -- -b ./bin/ v${GOLANGCI_VERSION}
 
+.PHONY: clean
+clean: ## Clean the working area
+	rm -rf bin/ build/ vendor/
+
 .PHONY: check
 check:: test lint ## Run tests and linters
 
