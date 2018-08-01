@@ -219,3 +219,9 @@ func (s *EnvVarSet) ParseEnviron(environ []string) error {
 func (s *EnvVarSet) Parsed() bool {
 	return s.parsed
 }
+
+// Init sets error handling property for an env var set.
+// By default, the zero EnvVarSet uses the ContinueOnError error handling policy.
+func (s *EnvVarSet) Init(errorHandling ErrorHandling) {
+	s.errorHandling = errorHandling
+}
