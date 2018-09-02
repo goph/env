@@ -1,18 +1,6 @@
 # A Self-Documenting Makefile: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 
-DEP_VERSION = 0.5.0
 GOLANGCI_VERSION = 1.9.3
-
-.PHONY: setup
-setup: vendor ## Setup the project for development
-
-bin/dep: ## Install dep
-	@mkdir -p ./bin/
-	@curl https://raw.githubusercontent.com/golang/dep/master/install.sh | INSTALL_DIRECTORY=./bin DEP_RELEASE_TAG=v${DEP_VERSION} sh
-
-.PHONY: vendor
-vendor: bin/dep ## Install dependencies
-	@bin/dep ensure
 
 .PHONY: clean
 clean: ## Clean the working area
