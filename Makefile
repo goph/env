@@ -1,31 +1,37 @@
 # A Self-Documenting Makefile: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 
+DEP_VERSION = 0.5.0
 GOLANGCI_VERSION = 1.9.3
 
 .PHONY: setup
-setup:: setup-env ## Setup the project for development
+setup: vendor ## Setup the project for development
 
-.PHONY: setup-env
-setup-env: bin/golangci-lint ## Setup environment
-
-bin/golangci-lint: ## Install golangci linter
+bin/dep: ## Install dep
 	@mkdir -p ./bin/
-	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | bash -s -- -b ./bin/ v${GOLANGCI_VERSION}
+	@curl https://raw.githubusercontent.com/golang/dep/master/install.sh | INSTALL_DIRECTORY=./bin DEP_RELEASE_TAG=v${DEP_VERSION} sh
+
+.PHONY: vendor
+vendor: bin/dep ## Install dependencies
+	@bin/dep ensure
 
 .PHONY: clean
 clean: ## Clean the working area
 	rm -rf bin/ build/ vendor/
 
 .PHONY: check
-check:: test lint ## Run tests and linters
+check: test lint ## Run tests and linters
 
 .PHONY: test
-test: ## Run all tests
+test: ## Run tests
 	go test ${ARGS} ./...
+
+bin/golangci-lint: ## Install golangci linter
+	@mkdir -p ./bin/
+	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | bash -s -- v${GOLANGCI_VERSION}
 
 .PHONY: lint
 lint: bin/golangci-lint ## Run linter
-	bin/golangci-lint run
+	@bin/golangci-lint run
 
 .PHONY: help
 .DEFAULT_GOAL := help
