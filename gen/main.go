@@ -62,7 +62,7 @@ func main() {
 	}
 
 	for _, t := range types {
-		file, err := os.Create(fmt.Sprintf("value_%s.go", t))
+		file, err := os.Create(fmt.Sprintf("value_%s.gen.go", t))
 		if err != nil {
 			panic(err)
 		}
